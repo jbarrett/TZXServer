@@ -50,3 +50,10 @@ template: "simple"
 #      cookie_name: eshop.session
 #      is_secure: 1
 #      is_http_only: 1
+
+plugins:
+  DBIC:
+    default:
+      dsn: dbi:SQLite:dbname=tzxserver.sqlite
+      schema_class: TZXServer::Schema
+
