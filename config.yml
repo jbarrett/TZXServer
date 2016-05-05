@@ -21,7 +21,7 @@ charset: "UTF-8"
 template: Xslate
 engines:
   template:
-    Xslate: { path: "views" }
+    Xslate: { path: "" }
 
 # session engine
 #
