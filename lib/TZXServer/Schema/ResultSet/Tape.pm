@@ -44,4 +44,16 @@ sub import( $self ) {
     $txn->commit;
 }
 
+sub by_title( $self, $title ) {
+    $title =~ s/^\s+//;
+    $title =~ s/\s+$//;
+
+    $self->search_rs({
+        -and => [
+            map { \[ 'LOWER(title) LIKE ?', "%$_%" ] }
+                ( split /\s+/, lc( $title ) ),
+        ],
+    });
+}
+
 1;
