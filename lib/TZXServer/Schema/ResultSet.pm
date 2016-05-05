@@ -4,11 +4,15 @@ use TZXServer::Base::Imports;
 extends 'DBIx::Class::ResultSet';
 
 sub schema {
-    shift->result_source->schema;
+    $_[0]->result_source->schema;
 }
 
 sub rs {
     shift->result_source->schema->resultset(@_);
+}
+
+sub all_ref {
+    [ $_[0]->all ];
 }
 
 __PACKAGE__->load_components(qw/
