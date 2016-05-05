@@ -1,0 +1,11 @@
+: for $tapes -> $tape {
+    <p>
+        <a href="/tape/<: $tape.id :>">
+            : $tape.title
+        </a>
+        : if $tape.publisher { " (" ~ $tape.publisher ~ ")" }
+        : if $tape.year { " (" ~ $tape.year ~ ")" }
+    </p>
+: } else {
+    <h1>No tapes found matching "<: $query :>"</h1>
+: }
