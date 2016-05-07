@@ -8,6 +8,11 @@
 
     <body>
         : $content | raw
+
+        <p>
+            <a href="https://github.com/jbarrett/TZXServer">Source</a>
+        </p>
+
     </body>
 
 </html>
