@@ -34,6 +34,24 @@ get '/tape/:id' => sub {
     }
 };
 
+get '/play/:id/:filename' => sub {
+    my $filetype = config->{prefer} || 'mp3';
+
+    my $file = rset('Tape::File')->search( {
+        tape_id  => route_parameters->get('id'),
+        filename => route_parameters->get('filename'),
+    } )->one_row;
+
+    if ( !$file ) {
+        status 404;
+        return "Not found"
+    }
+
+    redirect( URI->new(
+        sprintf( '/cache/%s', $file->$filetype )
+    )->canonical );
+};
+
 any '/search' => sub {
     my $query = param('q');
     $query = join ' ', @{ $query } if ref $query eq 'ARRAY';
