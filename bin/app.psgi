@@ -14,5 +14,5 @@ builder {
     mount '/' => TZXServer->to_app;
     mount '/cache' => Plack::App::File->new(
         root => catdir( $ENV{HOME}, qw/ .tzxserver cache / )
-    );
+    )->to_app;
 }
