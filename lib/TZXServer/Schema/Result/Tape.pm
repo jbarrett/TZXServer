@@ -16,4 +16,11 @@ column genre     => { data_type => 'text', is_nullable => 1  };
 column publisher => { data_type => 'text', is_nullable => 1  };
 column uri       => { data_type => 'text', is_nullable => 1  };
 
+has_many files => 'TZXServer::Schema::Result::Tape::File' => 'tape_id';
+
+sub unroll( $self ) {
+    return if $self->files->one_row || !$self->uri;
+    $self->rs('Tape::File')->create_from_tape( $self );
+}
+
 1;

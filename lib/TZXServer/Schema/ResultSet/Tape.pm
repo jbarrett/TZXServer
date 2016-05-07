@@ -21,7 +21,7 @@ sub _build_tzxvault_scraper {
 }
 
 sub _uri( $self, $index) {
-    URI->new( "http://www.tzxvault.org/${index}.htm" )
+    URI->new( "http://www.tzxvault.org/${index}.htm" );
 }
 
 sub import( $self ) {
