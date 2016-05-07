@@ -7,5 +7,5 @@ use Dancer2;
 use Dancer2::Plugin::DBIC qw/ schema rset /;
 
 my $schema = schema('default');
-$schema->upgrade;
+$schema->db_upgrade;
 

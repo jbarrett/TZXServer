@@ -6,7 +6,7 @@ extends 'DBIx::Class::Schema';
 
 our $VERSION = '0.001';
 
-sub upgrade( $self ) {
+sub db_upgrade( $self ) {
     my $db_version = $self->get_db_version;
 
     if ( $db_version ne $VERSION ) {
