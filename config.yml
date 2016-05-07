@@ -53,3 +53,5 @@ plugins:
       dsn: dbi:SQLite:dbname=tzxserver.sqlite
       schema_class: TZXServer::Schema
 
+# wav, mp3 or ogg
+prefer: mp3
