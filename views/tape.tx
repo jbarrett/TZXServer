@@ -2,9 +2,13 @@
     <h1>Tape not found</h1>
 : } else {
     <h1><: $tape.title :></h1>
-    : if $tape.uri {
-        <audio src="/play/<: $tape.id :>">
-        </audio>
+
+    : for $tape.files.all_ref -> $file {
+        <p>
+            : $file.filename
+            <br />
+            <audio src="/play/<: $tape.id :>/<: $file.filename :>" controls="controls" preload="none">
+        </p>
     : } else {
         <p>Tape not available</p>
         <p>Sign in to upload your own tape image for this game (coming soon)</p>
