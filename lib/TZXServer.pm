@@ -8,6 +8,10 @@ use URI;
 
 our $VERSION = schema('default')->{VERSION};
 
+BEGIN {
+    rset('Tape')->import;
+}
+
 get '/' => sub {
     template 'index';
 };
