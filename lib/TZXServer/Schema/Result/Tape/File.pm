@@ -72,7 +72,7 @@ sub make_wav( $self ) {
                 $self->playtzx,
                 '-freq', '44100', '-au',
                 $tzx, $au,
-            ], \$i, \$o, \$e, timeout( 30 )
+            ], '<pty<', \$i, '>pty>', \$o, '2>', \$e, timeout( 30 )
                 or $self->throw_exception( "E$? :\n$e\n$o\n" );
 
             run [
