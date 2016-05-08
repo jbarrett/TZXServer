@@ -80,7 +80,7 @@ sub make_wav( $self ) {
             ], \$i, \$o, \$e, timeout( 30 )
                 or $self->throw_exception( "E$? :\n$e\n$o\n" );
 
-            my @gain = ( $o - 1 > 0 ) ? ( '-v', $o - 1 ) : ();
+            my @gain = ( $e - 1 > 0 ) ? ( '-v', $e - 1 ) : ();
 
             run [
                 $self->sox, @gain, $au, $wav
