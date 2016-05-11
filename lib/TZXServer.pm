@@ -69,4 +69,67 @@ any '/search' => sub {
     }
 };
 
+get '/login' => sub {
+    template 'login.tx';
+};
+
+post '/login' => sub {
+    my $username = body_parameters->get('username');
+    my $password = body_parameters->get('password');
+
+    my $user = rset('User')->find_lc( $username );
+
+    if ( !$user ) {
+        status 400;
+        return template 'login.tx', {
+            username => $username,
+            msg      => "Incorrect username",
+        }
+    }
+
+    if ( !$user->check_password( $password ) ) {
+        status 400;
+        return template 'login.tx', {
+            username => $username,
+            msg      => "Incorrect passsword",
+        }
+    }
+
+    session user => $user->username;
+    redirect '/';
+};
+
+get '/register' => sub {
+    template 'register.tx';
+};
+
+post '/register' => sub {
+    my $username = body_parameters->get('username');
+    my $password = body_parameters->get('password');
+
+    if ( rset('User')->find_lc( $username ) ) {
+        status 403;
+        return template 'register.tx', {
+            username => $username,
+            msg      => "This username exists, please choose another",
+        };
+    }
+
+    my $user = rset('User')->create( {
+        username => $username,
+        password => $password,
+    } );
+
+    if ( $user ) {
+        session user => $user->username;
+        redirect '/';
+    }
+
+};
+
+get '/logout' => sub {
+    app->destroy_session;
+    redirect '/';
+};
+
 1;

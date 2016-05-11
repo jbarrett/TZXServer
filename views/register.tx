@@ -1,0 +1,14 @@
+<h1>Register</h1>
+: if $msg {
+    <h2><: $msg :></h2>
+: }
+<form action='/register' method='POST'>
+    <p>
+        Username: <input type="text" name="username" value="<: $username :>">
+    </p>
+    <p>
+        Password: <input type="text" name="password">
+    </p>
+    <input type="submit" value="Register">
+</form>
+
