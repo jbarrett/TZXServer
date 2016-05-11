@@ -6,7 +6,7 @@ use File::Spec::Functions;
 
 extends 'DBIx::Class::Schema';
 
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 has cache_storage => ( is => 'lazy' );
 sub _build_cache_storage {
