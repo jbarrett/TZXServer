@@ -13,7 +13,6 @@ column password => { data_type => 'text' };
 __PACKAGE__->filter_column( password => {
         filter_from_storage => sub { $_[1]; },
         filter_to_storage   => sub ( $self, $password ) {
-            use DDP; p $self->pbkdf2->generate( $password );
             $self->pbkdf2->generate( $password );
         },
     }
