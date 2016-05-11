@@ -35,4 +35,6 @@ sub check_password( $self, $password ) {
     $self->pbkdf2->validate( $self->password, $password );
 }
 
+has_many( files => 'TZXServer::Schema::Result::Tape::File' => 'username' );
+
 1;

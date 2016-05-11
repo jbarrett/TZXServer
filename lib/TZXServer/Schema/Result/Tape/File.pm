@@ -9,8 +9,14 @@ use File::Spec::Functions;
 use IPC::Run qw/ run timeout /;
 use File::chdir;
 
-primary_column tape_id  => { data_type => 'integer' };
-primary_column filename => { data_type => 'text' };
+primary_column id => {
+    data_type => 'integer',
+    auto_increment => 1,
+};
+
+column tape_id  => { data_type => 'integer' };
+column filename => { data_type => 'text' };
+column username => { data_type => 'text', is_nullable => 1 };
 
 has playtzx => ( is => 'lazy' );
 sub _build_playtzx {
