@@ -35,11 +35,12 @@ engines:
 # Dancer apps on the same host then you will need to make sure 'cookie_name'
 # is different for each app.
 #
+
 engines:
   session:
-    Simple:
-      cookie_name: tzxserver
-#
+    PSGI:
+      cookie_name: plack_session
+
 #engines:
 #  session:
 #    YAML:
