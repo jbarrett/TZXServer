@@ -10,7 +10,20 @@
             <audio src="/play/<: $tape.id :>/<: $file.filename :>" controls="controls" preload="none">
         </p>
     : } else {
-        <p>Tape not available</p>
-        <p>Sign in to upload your own tape image for this game (coming soon)</p>
+        : if $session.user {
+            Upload TZX file
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file">
+                <input type="submit" name="submit" value="Upload">
+            </form>
+        : } else {
+            <p>Tape not available</p>
+            <p>
+                <a href="/login">
+                    Login
+                </a>
+                to upload your own tape image for this game
+            </p>
+        : }
     : }
 : }
