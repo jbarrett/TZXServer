@@ -3,6 +3,8 @@ package TZXServer;
 use Dancer2;
 use Dancer2::Plugin::DBIC qw/ schema rset /;
 
+setting( session => 'PSGI' );
+
 use Try::Tiny;
 use URI;
 
