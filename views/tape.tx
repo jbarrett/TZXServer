@@ -3,27 +3,27 @@
 : } else {
     <h1><: $tape.title :></h1>
 
-    : for $tape.files.all_ref -> $file {
+    : for $tape.files.find_for_user( $session.user ).all_ref -> $file {
         <p>
             : $file.filename
             <br />
             <audio src="/play/<: $tape.id :>/<: $file.filename :>" controls="controls" preload="none">
         </p>
-    : } else {
-        : if $session.user {
-            Upload TZX file
-            <form action="/upload" method="POST" enctype="multipart/form-data">
-                <input type="file" name="file">
-                <input type="submit" name="submit" value="Upload">
-            </form>
-        : } else {
-            <p>Tape not available</p>
-            <p>
-                <a href="/login">
-                    Login
-                </a>
-                to upload your own tape image for this game
-            </p>
-        : }
     : }
+
+    : if $session.user {
+        Upload TZX file
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <input type="hidden" name="tape_id" value="<: $tape.id :>">
+            <input type="submit" name="submit" value="Upload">
+        </form>
+    : } else {
+        <p>Tape not available</p>
+        <p>
+            <a href="/login">Login</a>
+            to upload your own tape image for this game
+        </p>
+    : }
+
 : }
