@@ -15,8 +15,8 @@ sub _build_cache_storage {
     return $path;
 }
 
-sub storage_dir( $self, $dir ) {
-    my $path = catdir( $self->cache_storage, $dir );
+sub storage_dir( $self, @dir ) {
+    my $path = catdir( $self->cache_storage, @dir );
     make_path( $path ) if ( !-d $path );
     return $path;
 }
