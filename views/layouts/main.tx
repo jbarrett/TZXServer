@@ -19,6 +19,7 @@
 
         <p>
             <a href="/">Home</a> |
+            <a href="/missing">Missing</a> |
             <a href="https://github.com/jbarrett/TZXServer">Source</a>
         </p>
 

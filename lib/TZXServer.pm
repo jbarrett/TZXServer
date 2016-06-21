@@ -76,6 +76,15 @@ any '/search' => sub {
     }
 };
 
+get '/missing' => sub {
+    template 'results', {
+        tapes => rset('Tape')
+            ->search({ uri => undef })
+            ->hri
+            ->all_ref,
+    }
+};
+
 get '/login' => sub {
     template 'login.tx';
 };
