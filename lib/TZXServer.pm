@@ -142,8 +142,7 @@ post '/upload' => sub {
     my $tape_id = body_parameters->get('tape_id');
     my $upload = upload('file');
 
-    my $foo = rset('Tape::File')->create_from_upload( $upload, session('user'), $tape_id );
-    use DDP;p $foo;
+    rset('Tape::File')->create_from_upload( $upload, session('user'), $tape_id );
 
     redirect "/tape/$tape_id";
 };
