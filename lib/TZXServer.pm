@@ -1,7 +1,7 @@
 package TZXServer;
 
 use Dancer2;
-use Dancer2::Plugin::DBIC qw/ schema rset /;
+use Dancer2::Plugin::DBIC;
 
 setting( session => 'PSGI' );
 
@@ -50,11 +50,16 @@ get '/play/:id/:filename' => sub {
 
     if ( !$file ) {
         status 404;
-        return "Not found"
+        return "Not found";
+    }
+
+    if ( $file->username && ( !session('user') || $file->username ne session('user') ) ) {
+        status 403;
+        return "Forbidden";
     }
 
     redirect( URI->new(
-        sprintf( '/cache/%s', $file->$filetype )
+        sprintf( '/cache/%s', $file->cache_path( $filetype ) )
     )->canonical );
 };
 
@@ -127,6 +132,20 @@ post '/register' => sub {
         redirect '/';
     }
 
+};
+
+post '/upload' => sub {
+    if ( ! session('user') ) {
+        status 403;
+        return q{¯\_(ツ)_/¯};
+    }
+    my $tape_id = body_parameters->get('tape_id');
+    my $upload = upload('file');
+
+    my $foo = rset('Tape::File')->create_from_upload( $upload, session('user'), $tape_id );
+    use DDP;p $foo;
+
+    redirect "/tape/$tape_id";
 };
 
 get '/logout' => sub {

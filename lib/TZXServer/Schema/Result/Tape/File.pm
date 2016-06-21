@@ -51,6 +51,16 @@ sub tzx( $self ) {
     catfile( $self->tape_id, $self->filename );
 }
 
+sub storage_dir( $self ) {
+    return $self->schema->storage_dir( $self->tape_id ) unless $self->username;
+    return $self->schema->storage_dir( $self->username, $self->tape_id );
+}
+
+sub cache_path( $self, $filetype ) {
+    return catfile( $self->$filetype ) unless $self->username;
+    return catfile( $self->username, $self->$filetype );
+}
+
 sub make_wav( $self ) {
     $self->throw_exception("playtzx or tape2wav requried for wav output")
         if ( !$self->playtzx && !$self->tape2wav );
@@ -61,7 +71,7 @@ sub make_wav( $self ) {
     my ( $i, $o, $e );
 
     {
-        local $CWD = $self->schema->storage_dir( $self->tape_id );
+        local $CWD = $self->storage_dir;
         if ( $self->tape2wav ) {
 
             run [
@@ -111,7 +121,7 @@ sub make_mp3( $self ) {
     my ( $i, $o, $e );
 
     {
-        local $CWD = $self->schema->storage_dir( $self->tape_id );
+        local $CWD = $self->storage_dir;
 
         run [
             $self->lame,
@@ -139,7 +149,7 @@ sub make_ogg( $self ) {
     my ( $i, $o, $e );
 
     {
-        local $CWD = $self->schema->storage_dir( $self->tape_id );
+        local $CWD = $self->storage_dir;
 
         run [
             $self->oggenc,
