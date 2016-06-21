@@ -4,6 +4,7 @@
         <title>
             TZX Server <: $title :>
         </title>
+        <link rel="stylesheet" type="text/css" href="/css/width.css">
     </head>
 
     <body>
