@@ -96,7 +96,7 @@ before insert => sub( $self ) {
 
             my $tzxfile = $self->filename =~ s/$re/.tzx/r;
             run [
-                $self->snap2tzx, $self->filename, '-o', $tzxfile
+                $self->snap2tzx, '-s1', $self->filename, '-o', $tzxfile
             ], \$i, \$o, \$e, timeout( 30 )
                 or $self->throw_exception( "E$? :\n$e\n$o\n" );
 
