@@ -87,9 +87,7 @@ before insert => sub( $self ) {
             ], \$i, \$o, \$e, timeout( 30 )
                 or $self->throw_exception( "E$? :\n$e\n$o\n" );
 
-            $self->set_column( filename => $tzxfile );
-            use DDP; p @_; p $tzxfile;
-            return;
+            return $self->filename( $tzxfile );
         }
         elsif (  $self->filename =~ $self->snap_re ) {
             $self->throw_exception("snap2tzx required to convert snapshot files")
