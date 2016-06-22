@@ -43,6 +43,71 @@ sub _build_sox {
     which 'sox';
 }
 
+has snap2tzx => ( is => 'lazy' );
+sub _build_snap2tzx {
+    which 'snap2tzx';
+}
+
+has tapeconv => ( is => 'lazy' );
+sub _build_tapeconv {
+    which 'tapeconv';
+}
+
+has tzx_re => ( is => 'lazy' );
+sub _build_tzx_re {
+    qr{\.tzx$}i
+}
+
+has tap_re => ( is => 'lazy' );
+sub _build_tap_re {
+    qr{\.tap$}i
+}
+
+has snap_re => ( is => 'lazy' );
+sub _build_snap_re {
+    qr{\.(z80|sna|zxs)$}i
+}
+
+before insert => sub( $self ) {
+    return if $self->filename =~ $self->tzx_re;
+
+    {
+        local $CWD = $self->storage_dir;
+        my ( $i, $o, $e );
+
+        if ( $self->filename =~ $self->tap_re ) {
+            $self->throw_exception("tapeconv required to convert tap files")
+                unless $self->tapeconv;
+            # Methods don't work in s///?
+            my $re = $self->tap_re;
+
+            my $tzxfile = $self->filename =~ s/$re/.tzx/r;
+            run [
+                $self->tapeconv, $self->filename, $tzxfile
+            ], \$i, \$o, \$e, timeout( 30 )
+                or $self->throw_exception( "E$? :\n$e\n$o\n" );
+
+            $self->set_column( filename => $tzxfile );
+            use DDP; p @_; p $tzxfile;
+            return;
+        }
+        elsif (  $self->filename =~ $self->snap_re ) {
+            $self->throw_exception("snap2tzx required to convert snapshot files")
+                unless $self->snap2tzx;
+            my $re = $self->snap_re;
+
+            my $tzxfile = $self->filename =~ s/$re/.tzx/r;
+            run [
+                $self->snap2tzx, $self->filename, '-o', $tzxfile
+            ], \$i, \$o, \$e, timeout( 30 )
+                or $self->throw_exception( "E$? :\n$e\n$o\n" );
+
+            return $self->filename( $tzxfile );
+        }
+    };
+    $self->throw_exception("Can't handle file type " . $self->filename)
+};
+
 sub fullpath( $self, $path = "" ) {
     $self->schema->storage_file( $path || $self->tzx );
 }

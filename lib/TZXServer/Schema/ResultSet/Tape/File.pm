@@ -14,12 +14,18 @@ sub _build_http {
     HTTP::Tiny->new;
 }
 
+has tape_re => ( is => 'lazy' );
+sub _build_tape_re {
+    # Let's filter  - don't want to croak on a txt file or something
+    qr{\.(tzx|tap|z80|sna|zxs)$}i;
+}
+
 sub create_from_zip( $self, $zipfile, $stash, $tape_id, $username = undef ) {
     my $ex = Archive::Extract->new( archive => $zipfile );
     $ex->extract( to => $stash );
 
     for my $file ( @{ $ex->files } ) {
-        next if $file !~ /tzx$/i;
+        next if $file !~ $self->tape_re;
         $self->create({
             tape_id  => $tape_id,
             filename => $file,
@@ -59,7 +65,7 @@ sub create_from_upload( $self, $upload, $username, $tape_id ) {
     }
 
     $self->throw_exception( "Unknown file type")
-        if $target !~ /\.tzx$/i;
+        if $target !~ $self->tape_re;
 
     $self->create({
         tape_id  => $tape_id,
