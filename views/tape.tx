@@ -1,7 +1,11 @@
 : if !$tape {
     <h1>Tape not found</h1>
 : } else {
-    <h1><: $tape.title :></h1>
+    <h1>
+        <: $tape.title :>
+        : if $tape.publisher { " (" ~ $tape.publisher ~ ")" }
+        : if $tape.year { " (" ~ $tape.year ~ ")" }
+    </h1>
 
     : for $tape.files.find_for_user( $session.user ).all_ref -> $file {
         <p>
