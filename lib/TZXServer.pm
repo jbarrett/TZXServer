@@ -77,11 +77,17 @@ any '/search' => sub {
 };
 
 get '/missing' => sub {
+    my $rs = rset('Tape')->search({ uri => undef });
+    $rs = $rs->search({
+        id => {
+            -not_in => rset('Tape::File')->search({
+                username => session('user')
+            })->get_column('tape_id')->as_query
+        }
+    }) if session('user');
+
     template 'results', {
-        tapes => rset('Tape')
-            ->search({ uri => undef })
-            ->hri
-            ->all_ref,
+        tapes => $rs->hri->all_ref
     }
 };
 
