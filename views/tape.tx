@@ -13,6 +13,8 @@
             <br />
             <audio src="/play/<: $tape.id :>/<: $file.filename :>" controls="controls" preload="none">
         </p>
+    : } else {
+        <p>Tape not available</p>
     : }
 
     : if $session.user {
@@ -23,7 +25,6 @@
             <input type="submit" name="submit" value="Upload">
         </form>
     : } else {
-        <p>Tape not available</p>
         <p>
             <a href="/login">Login</a>
             to upload your own tape image for this game
